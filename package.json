@@ -1,0 +1,18 @@
+{
+  "name": "neo4j-projekat-nbp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Andrija M",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "express-handlebars": "^6.0.2",
+    "morgan": "*",
+    "neo4j-driver": "^4.4.1"
+  }
+}

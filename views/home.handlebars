@@ -1,0 +1,17 @@
+
+<div class="container-fluid">
+    <div class="row">
+            {{#each books}}
+                <div class="col booksDiv">
+                    <div>
+                    <div class=" bookImage">
+                        {{{this.url}}}
+                    </div>
+                    <p class=" bookTitle">{{this.title}}</p>
+                    <p class=" bookYear">{{this.year}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+body, html{
+    padding: 10px; 
+}
+.booksDiv{
+    margin: 5px;
+    outline: 1px solid white;
+    max-width: 240px;
+}
+
+img{
+    margin-top: 2px;
+    width: 220px;
+    height: 320px;
+}

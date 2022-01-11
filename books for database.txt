@@ -1,0 +1,60 @@
+create (n: writer {name: "Stephen King"});
+
+create (c: book {title: "IT"});
+match (a: book {title: "IT"}),(b:writer {name: "Stephen King"}) set a.year=1986 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/7/78/It_%28Stephen_King_novel_-_cover_art%29.jpg'/>" merge (a)-[r:wrote]-(b)
+
+create (e: book {title: "The Stand"});
+match (f: book {title: "The Stand"}) set f.year=1978;
+match (f: book {title: "The Stand"}) set f.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/9/96/The_Stand_cover.jpg/220px-The_Stand_cover.jpg'/>";
+match (g: writer {name: "Stephen King"}), (h: book {title: "The Stand"}) merge (g)-[s:wrote]-(h);
+
+create (i: book {title: "The Shining"});
+match (j: book {title: "The Shining"}) set j.year=1977;
+match (j: book {title: "The Shining"}) set j.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Shiningnovel.jpg/220px-Shiningnovel.jpg'/>";
+match (k: writer {name: "Stephen King"}), (l: book {title: "The Shining"}) merge (k)-[t:wrote]-(l);
+
+create (m: book {title: "Misery"});
+match (o: book {title: "Misery"}) set o.year=1987;
+match (o: book {title: "Misery"}) set o.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Misery_%281990_film_poster%29.png/220px-Misery_%281990_film_poster%29.png'/>";
+match (p: writer {name: "Stephen King"}), (q: book {title: "Misery"}) merge (p)-[u:wrote]-(q);
+
+
+
+create (n: writer {name: "William Shakespeare"});
+
+create (c: book {title: "Hamlet"});
+match (d: book {title: "Hamlet"}) set d.year=1603;
+match (d: book {title: "Hamlet"}) set d.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/e/e9/Hamlet_1996_poster.jpg/220px-Hamlet_1996_poster.jpg'/>";
+match (a: writer {name: "William Shakespeare"}), (b: book {title: "Hamlet"}) merge (a)-[r:wrote]-(b);
+
+create (c: book {title: "Macbeth"});
+match (d: book {title: "Macbeth"}) set d.year=1606;
+match (d: book {title: "Macbeth"}) set d.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/7/79/Macbeth_2015_poster.jpg/220px-Macbeth_2015_poster.jpg'/>";
+match (a: writer {name: "William Shakespeare"}), (b: book {title: "Macbeth"}) merge (a)-[r:wrote]-(b);
+
+create (c: book {title: "Romeo and Juliet"});
+match (d: book {title: "Romeo and Juliet"}) set d.year=1597;
+match (d: book {title: "Romeo and Juliet"}) set d.url="<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Romeo_and_juliet_brown.jpg/220px-Romeo_and_juliet_brown.jpg'/>";
+match (a: writer {name: "William Shakespeare"}), (b: book {title: "Romeo and Juliet"}) merge (a)-[r:wrote]-(b);
+
+
+
+
+
+create (n: writer {name: "Agatha Christie"});
+
+create (c: book {title: "Murder on the Orient Express"});
+match (d: book {title: "Murder on the Orient Express"}) set d.year=1934;
+match (d: book {title: "Murder on the Orient Express"}) set d.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/Murder_on_the_Orient_Express_First_Edition_Cover_1934.jpg/220px-Murder_on_the_Orient_Express_First_Edition_Cover_1934.jpg'/>";
+match (a: writer {name: "Agatha Christie"}), (b: book {title: "Murder on the Orient Express"}) merge (a)-[r:wrote]-(b);
+
+create (c: book {title: "The Mysterious Affair at Styles The Mysterious Affair at Styles"});
+match (d: book {title: "The Mysterious Affair at Styles The Mysterious Affair at Styles"}) set d.year=1920;
+match (d: book {title: "The Mysterious Affair at Styles The Mysterious Affair at Styles"}) set d.url="<img src='https://upload.wikimedia.org/wikipedia/en/8/8c/Mysterious_affair_at_styles.jpg'/>";
+match (a: writer {name: "Agatha Christie"}), (b: book {title: "The Mysterious Affair at Styles The Mysterious Affair at Styles"}) merge (a)-[r:wrote]-(b);
+
+create (c: book {title: "The Murder of Roger Ackroyd"});
+match (d: book {title: "The Murder of Roger Ackroyd"}) set d.year=1926;
+match (d: book {title: "The Murder of Roger Ackroyd"}) set d.url="<img src='https://upload.wikimedia.org/wikipedia/en/5/57/The_Murder_of_Roger_Ackroyd_First_Edition_Cover_1926.jpg'/>";
+match (a: writer {name: "Agatha Christie"}), (b: book {title: "The Murder of Roger Ackroyd"}) merge (a)-[r:wrote]-(b);
+
