@@ -1,3 +1,7 @@
+:root{
+    --blue: #375A7F;
+}
+
 body, html{
     padding: 10px; 
 }
@@ -11,4 +15,28 @@ img{
     margin-top: 2px;
     width: 220px;
     height: 320px;
+}
+
+.centerThis{
+    top: 5px;
+    margin: auto;
+    background-color: var(--blue);
+    width: 40%;
+    padding: 10px;
+    text-align: center;
+    border-radius: 0 0 5% 5%;
+}
+
+.recomended{
+    width: 100%;
+    margin: 30px;
+    outline: 1px solid white;
+}
+
+.recomendedBookItems{
+    background-color: var(--blue);
+    
+    padding: 10px;
+    margin: 3px;
+    max-width: 240px;
 }

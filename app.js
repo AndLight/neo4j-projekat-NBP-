@@ -39,7 +39,7 @@ var neo4j = require('neo4j-driver');
 //#region [rgba (255 ,0 ,0 , 0.1)] HOME
 // Home Page
 
-app.get('/', function(req, res){
+app.get('/', function(req, res, next){
 
     session
         .run('MATCH(n:book) RETURN n LIMIT 25')
@@ -150,7 +150,7 @@ app.get('/', function(req, res){
 // console.log("idValue")
 // console.log(idValue)
 
-    app.post("/book", function(req, res){
+    app.post("/book", function(req, res, next){
         let bookId = req.body.bookID;
         console.log(bookId)
 
@@ -158,39 +158,70 @@ app.get('/', function(req, res){
             .run("match (n) where ID(n)="+bookId+" return n")
             .then(function(result){
 
-                // let book = {
-                //         id: result.record._fields[0].identity.low,
-                //         title: result.record._fields[0].properties.title,
-                //         year: result.record._fields[0].properties.year,
-                //         url: result.record._fields[0].properties.url
-                // }
-
-                console.log(result.records[0]._fields[0].identity.low);
-
-
-
-
-                // let bookArr = [];
+                let book = {
+                        id: result.records[0]._fields[0].identity.low,
+                        title: result.records[0]._fields[0].properties.title,
+                        year: result.records[0]._fields[0].properties.year,
+                        url: result.records[0]._fields[0].properties.url
+                }
+                session
+                    .run("match (n:book {title: \""+book.title+"\"})-[*2]-(x:book) return distinct x")
+                    .then(function(result){
+                        let bookArr = [];
     
-                // result.records.forEach(record => {
+                        result.records.forEach(record => {
     
-                //     bookArr.push({
-                //         id: record._fields[0].identity.low,
-                //         title: record._fields[0].properties.title,
-                //         year: record._fields[0].properties.year,
-                //         url: record._fields[0].properties.url
-                //     })
-                //     // console.log(record._fields[0].properties)
-                   
-                // });
+                            bookArr.push({
+                                id: record._fields[0].identity.low,
+                                title: record._fields[0].properties.title,
+                                year: record._fields[0].properties.year,
+                                url: record._fields[0].properties.url
+                            })
+                            
+                        });
     
-                // bookArr = bookArr.sort((a,b) => 0.5 - Math.random());
-                // res.render('home',{books: bookArr});
-                
+                        bookArr = bookArr.sort((a,b) => 0.5 - Math.random());
+                        let minYear = Number(book.year)-20;
+                        let maxYear = Number(book.year)+20;
+                        // console.log("min max")
+                        // console.log(minYear, maxYear)
+
+                        session
+                            .run("match(b:book) where b.year> "+ minYear +" and b.year<"+ maxYear +" return b limit 25")
+                            .then(function(result){
+                                let bookYearArr = [];
+    
+                                result.records.forEach(record => {
+    
+                                    bookYearArr.push({
+                                        id: record._fields[0].identity.low,
+                                        title: record._fields[0].properties.title,
+                                        year: record._fields[0].properties.year,
+                                        url: record._fields[0].properties.url
+                                    });
+                            
+                                });
+                                
+                                res.render('book',{
+                                    book: book, 
+                                    authorBooks: bookArr,
+                                    yearsBooks: bookYearArr
+                                });
+                            })
+                            .catch(function(err){
+                                console.log(err);
+                            })
+                        
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+  
             })
-            .catch()
+            .catch(function(err){
+                console.log(err);
+            })
 
-        res.render('book', {id: bookId});
     });
 
     

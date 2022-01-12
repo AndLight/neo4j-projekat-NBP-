@@ -1,0 +1,32 @@
+<div class="centerThis">
+    <div class=" bookImage">{{{book.url}}}</div>
+    <p class="bookTitle">{{book.title}}</p>
+    <p class="bookYear">{{book.year}}</p>
+</div>
+
+
+<div class="container-fluid  recomended">
+    <h3>Recomended by same writer</h3>
+    <div class="row">
+        {{#each authorBooks}}
+            <div class="col recomendedBookItems">
+                <div>{{{this.url}}}</div>
+                <p>{{this.title}}</p>
+                <p>{{this.year}}</p>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<div class="container-fluid  recomended">
+    <h3>Writen in the same period</h3>
+    <div class="row">
+        {{#each yearsBooks}}
+            <div class="col recomendedBookItems">
+                <div>{{{this.url}}}</div>
+                <p>{{this.title}}</p>
+                <p>{{this.year}}</p>
+            </div>
+        {{/each}}
+    </div>
+</div>
