@@ -64,10 +64,8 @@ app.get('/', function(req, res, next){
         })
         .catch(function(err){
             console.log(err);
-        });
+        })
 
-    // res.send('Hello');
-    // res.render('home');
 });
 
 //Add user 
@@ -152,7 +150,7 @@ app.get('/', function(req, res, next){
 
     app.post("/book", function(req, res, next){
         let bookId = req.body.bookID;
-        console.log(bookId)
+        // console.log(bookId)
 
         session
             .run("match (n) where ID(n)="+bookId+" return n")
@@ -181,13 +179,13 @@ app.get('/', function(req, res, next){
                         });
     
                         bookArr = bookArr.sort((a,b) => 0.5 - Math.random());
-                        let minYear = Number(book.year)-20;
-                        let maxYear = Number(book.year)+20;
+                        let minYear = Number(book.year)-50;
+                        let maxYear = Number(book.year)+50;
                         // console.log("min max")
                         // console.log(minYear, maxYear)
 
                         session
-                            .run("match(b:book) where b.year> "+ minYear +" and b.year<"+ maxYear +" return b limit 25")
+                            .run("match(b:book) where b.year> "+ minYear +" and b.year<"+ maxYear +" return b limit 10")
                             .then(function(result){
                                 let bookYearArr = [];
     
@@ -201,7 +199,7 @@ app.get('/', function(req, res, next){
                                     });
                             
                                 });
-                                
+
                                 res.render('book',{
                                     book: book, 
                                     authorBooks: bookArr,
@@ -226,6 +224,202 @@ app.get('/', function(req, res, next){
 
     
 
+//#endregion
+///////////////////////////////////////////////////////
+//#region [rgba (120, 202, 120, 0.1)] Update
+
+    app.post("/update", function(req, res, next){
+        let bookId = req.body.bookID;  
+        
+            session
+                .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+                .then(function(result){
+
+                    let book = {
+                        id: result.records[0]._fields[0].identity.low,
+                        title: result.records[0]._fields[0].properties.title,
+                        year: result.records[0]._fields[0].properties.year,
+                        url: result.records[0]._fields[0].properties.url,
+                        writer: result.records[0]._fields[1].properties.name
+                    }
+
+                    res.render('update',{bookUpdate: book})
+
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+        
+    })
+
+    app.post("/updateBookName", function(req, res, next){
+        let bookId = req.body.bookID; 
+        let newBookName = req.body.bookName; 
+        
+
+        session
+            .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+            .then(function(result){
+
+                let book = {
+                    id: result.records[0]._fields[0].identity.low,
+                    title: result.records[0]._fields[0].properties.title,
+                    year: result.records[0]._fields[0].properties.year,
+                    url: result.records[0]._fields[0].properties.url,
+                    writer: result.records[0]._fields[1].properties.name
+                }
+
+                session
+                    .run("match (n:book {title:\""+book.title+"\"}) detach delete n")
+                    .then(function(){
+
+                        session
+                            .run("create (c: book {title: \""+newBookName+"\"})")
+                            .then(function(){
+
+                                session
+                                    .run("match (a: book {title: \""+newBookName+"\"}),(b:writer {name: \""+book.writer+"\"}) set a.year="+book.year+" set a.url=\""+book.url+"\" merge (a)-[r:writen]-(b)  merge (b)-[p:wrote]-(a)")
+                                    .then(function(){
+                                        book.title= newBookName;
+
+                                        res.render('update',{bookUpdate: book, updateName: "Updated"})
+                                        
+                                    })
+                                    .catch(function(err){
+                                        console.log(err);
+                                    })
+                            })
+                            .catch(function(err){
+                                console.log(err);
+                            })
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+
+
+
+            //     session
+            //         .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+            //         .then(function(result){
+
+            //             let book = {
+            //                 id: result.records[0]._fields[0].identity.low,
+            //                 title: result.records[0]._fields[0].properties.title,
+            //                 year: result.records[0]._fields[0].properties.year,
+            //                 url: result.records[0]._fields[0].properties.url,
+            //                 writer: result.records[0]._fields[1].properties.name
+            //             }
+
+            //             res.render('update',{bookUpdate: book, updateYear: "Updated"})
+
+            //         })
+            //         .catch(function(err){
+            //             console.log(err);
+            //         })
+
+
+
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    })
+
+    app.post("/updateYear", function(req, res, next){
+        let bookId = req.body.bookID; 
+        let bookYear = req.body.bookYear; 
+
+        session
+            .run("match (n where ID(n)="+bookId+") set n.year="+bookYear)
+            .then(function(result){
+
+                session
+                    .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+                    .then(function(result){
+
+                        let book = {
+                            id: result.records[0]._fields[0].identity.low,
+                            title: result.records[0]._fields[0].properties.title,
+                            year: result.records[0]._fields[0].properties.year,
+                            url: result.records[0]._fields[0].properties.url,
+                            writer: result.records[0]._fields[1].properties.name
+                        }
+
+                        res.render('update',{bookUpdate: book, updateYear: "Updated"})
+
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    })
+
+    app.post("/updateBookImage", function(req, res, next){
+        let bookId = req.body.bookID; 
+        console.log(bookId)
+        let bookImage = "<img src=\'"+req.body.bookImage+"\'/>";
+
+        session
+            .run("match (n where ID(n)="+bookId+") set n.url=\""+bookImage+"\"")
+            .then(function(result){
+
+                session
+                    .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+                    .then(function(result){
+
+                        let book = {
+                            id: result.records[0]._fields[0].identity.low,
+                            title: result.records[0]._fields[0].properties.title,
+                            year: result.records[0]._fields[0].properties.year,
+                            url: result.records[0]._fields[0].properties.url,
+                            writer: result.records[0]._fields[1].properties.name
+                        }
+
+                        res.render('update',{bookUpdate: book, updateImg: "Updated"})
+
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    })
+
+    app.post("/updateWriter", function(req, res, next){
+        session
+            .run()
+            .then(function(result){
+
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    })
+
+//#endregion
+///////////////////////////////////////////////////////
+//#region [rgba (180, 83, 83, 0.1)] Delete
+    
+    app.post("/delete", function(req, res, next){
+
+        let bookId = req.body.bookID;  
+    
+            session
+                .run("match (n) where ID(n)= "+bookId+" detach delete n")
+                .then(function(){
+                    res.redirect('/');
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+        
+    });
 //#endregion
 ///////////////////////////////////////////////////////
 app.listen(port, function(){

@@ -1,7 +1,17 @@
 <div class="centerThis">
-    <div class=" bookImage">{{{book.url}}}</div>
-    <p class="bookTitle">{{book.title}}</p>
-    <p class="bookYear">{{book.year}}</p>
+        <div >{{{book.url}}}</div>
+        <p>{{book.title}}</p>
+        <p>{{book.year}}</p>
+
+        <form method="POST" action="/Update" class="form__submit" name="form">
+            <input type="hidden" name="bookID" value={{book.id}}>
+            <input type="submit" value="Update" class="btn btn-primary form-control update" placeholder="First Name">
+        </form>
+
+        <form method="POST" action="/Delete" class="form__submit" name="form">
+            <input type="hidden" name="bookID" value={{book.id}}>
+            <input type="submit" value="Delete" class="btn btn-primary form-control delete" placeholder="First Name">
+        </form>
 </div>
 
 
@@ -9,11 +19,12 @@
     <h3>Recomended by same writer</h3>
     <div class="row">
         {{#each authorBooks}}
-            <div class="col recomendedBookItems">
-                <div>{{{this.url}}}</div>
-                <p>{{this.title}}</p>
-                <p>{{this.year}}</p>
-            </div>
+            <form method="POST" action="/book" class="form__submit col recomendedBookItems" name="form">
+                    <input type="hidden" name="bookID" value={{this.id}}>
+                    <div onclick="this.parentNode.submit()">{{{this.url}}}</div>
+                    <p>{{this.title}}</p>
+                    <p>{{this.year}}</p>
+            </form>
         {{/each}}
     </div>
 </div>
@@ -22,11 +33,12 @@
     <h3>Writen in the same period</h3>
     <div class="row">
         {{#each yearsBooks}}
-            <div class="col recomendedBookItems">
-                <div>{{{this.url}}}</div>
-                <p>{{this.title}}</p>
-                <p>{{this.year}}</p>
-            </div>
+            <form method="POST" action="/book" class="form__submit col recomendedBookItems" name="form">
+                    <input type="hidden" name="bookID" value={{this.id}}>
+                    <div onclick="this.parentNode.submit()">{{{this.url}}}</div>
+                    <p>{{this.title}}</p>
+                    <p>{{this.year}}</p>
+            </form>
         {{/each}}
     </div>
 </div>

@@ -1,0 +1,49 @@
+<div class="centerThis">{{{bookUpdate.url}}}<p></p></div>
+
+
+<form method="POST" action="/updateBookName">
+
+    <div class="form-group">
+        <label>Book name</label>
+        {{#if updateName}} <span class="text-success">{{updateName}}</span>{{/if}}
+        <input type="hidden" name="bookID" value={{bookUpdate.id}}>
+        <input value="{{bookUpdate.title}}" type="text" name="bookName" class="form-control" placeholder="Book name">
+    </div>
+
+    <input type="submit" value="Update" class="btn btn-primary form-control" placeholder="First Name">
+
+</form>
+<form method="POST" action="/updateYear">
+    <div class="form-group">
+        <label>Year</label>
+        {{#if updateYear}} <span class="text-success">{{updateYear}}</span>{{/if}}
+        <input type="hidden" name="bookID" value={{bookUpdate.id}}>
+        <input value="{{bookUpdate.year}}" type="text" name="bookYear" class="form-control" placeholder="Year">
+    </div>
+
+    <input type="submit" value="Update" class="btn btn-primary form-control" placeholder="First Name">
+
+</form>
+<form method="POST" action="/updateBookImage">
+    <div class="form-group">
+        <label>Book image (URL)</label>
+        {{#if updateImg}} <span class="text-success">{{updateImg}}</span>{{/if}}
+        <input type="hidden" name="bookID" value={{bookUpdate.id}}>
+        <input type="text" name="bookImage" class="form-control" placeholder="Image URL here">
+    </div>
+
+    <input type="submit" value="Update" class="btn btn-primary form-control" placeholder="First Name">
+
+</form>
+<form method="POST" action="/updateWriter">
+    <div class="form-group">
+        <label>Writer</label>
+        <input type="hidden" name="bookID" value={{bookUpdate.id}}>
+        <input value="{{bookUpdate.writer}}" type="text" name="bookWriter" class="form-control" placeholder="Writer">
+    </div>
+
+    <input type="submit" value="Update" class="btn btn-primary form-control" placeholder="First Name">
+
+</form>
+
+

@@ -40,3 +40,11 @@ img{
     margin: 3px;
     max-width: 240px;
 }
+
+.update{
+    color: rgb(120, 202, 120);
+}
+
+.delete{
+    color: rgb(180, 83, 83);
+}
