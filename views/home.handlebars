@@ -1,17 +1,57 @@
-
 <div class="container-fluid">
     <div class="row">
+
             {{#each books}}
-                <div class="col booksDiv">
+
+                {{!-- <div class="col booksDiv" onclick="clicked_ID(this.id)" id =  {{this.id}}>
                     <div>
-                    <div class=" bookImage">
-                        {{{this.url}}}
+                        <div class=" bookImage">
+                            {{{this.url}}}
+                        </div>
+
+                        <p class="bookTitle">{{this.title}}</p>
+                        <p class="bookYear">{{this.year}}</p>
+
                     </div>
-                    <p class=" bookTitle">{{this.title}}</p>
-                    <p class=" bookYear">{{this.year}}</p>
-                    </div>
-                </div>
+                </div> --}}
+
+                <form method="POST" action="/book" class="form__submit col booksDiv" name="form">
+                    <input type="hidden" name="bookID" value={{this.id}}>
+
+                    
+                    <div class=" bookImage" onclick="this.parentNode.submit()">
+                            {{{this.url}}}
+                        </div>
+
+                        <p class="bookTitle">{{this.title}}</p>
+                        <p class="bookYear">{{this.year}}</p>
+                    
+                </form>
+
+            
             {{/each}}
+
         </div>
     </div>
 </div>
+
+{{!-- <div class="result_ID"></div> --}}
+
+<form method="POST" action="/book" class="form__submit" name="form">
+    <input type="hidden" name="bookID" class="result_ID">
+</form>
+
+<script>
+    function clicked_ID(idI){
+        
+        
+        let helper = document.getElementsByClassName('result_ID');
+        helper.value = idI;
+
+        console.log("id " +idI + " helper "+ helper.value);
+
+        {{!-- let form = document.getElementById("form__submit"); --}}
+        document.form.submit();
+
+    }
+</script>

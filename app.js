@@ -5,6 +5,7 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 var neo4j = require('neo4j-driver');
 
+
 //#region [rgba (0,128,128, 0.1)] SETUP
 // Create Redis Client
 // Set Port
@@ -31,6 +32,7 @@ var neo4j = require('neo4j-driver');
 //neo4j set up
     let driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', '123456'));
     let session = driver.session();
+
 
 //#endregion    
 ///////////////////////////////////////////////////////
@@ -139,7 +141,62 @@ app.get('/', function(req, res){
 
 //#endregion
 ///////////////////////////////////////////////////////
+//#region [rgba (229 ,180 ,205 , 0.1)] BOOK
+// Book Page
 
+// let helpDIV = document.getElementsByClassName("result_ID");
+// let idValue = helpDIV.id;
+
+// console.log("idValue")
+// console.log(idValue)
+
+    app.post("/book", function(req, res){
+        let bookId = req.body.bookID;
+        console.log(bookId)
+
+        session
+            .run("match (n) where ID(n)="+bookId+" return n")
+            .then(function(result){
+
+                // let book = {
+                //         id: result.record._fields[0].identity.low,
+                //         title: result.record._fields[0].properties.title,
+                //         year: result.record._fields[0].properties.year,
+                //         url: result.record._fields[0].properties.url
+                // }
+
+                console.log(result.records[0]._fields[0].identity.low);
+
+
+
+
+                // let bookArr = [];
+    
+                // result.records.forEach(record => {
+    
+                //     bookArr.push({
+                //         id: record._fields[0].identity.low,
+                //         title: record._fields[0].properties.title,
+                //         year: record._fields[0].properties.year,
+                //         url: record._fields[0].properties.url
+                //     })
+                //     // console.log(record._fields[0].properties)
+                   
+                // });
+    
+                // bookArr = bookArr.sort((a,b) => 0.5 - Math.random());
+                // res.render('home',{books: bookArr});
+                
+            })
+            .catch()
+
+        res.render('book', {id: bookId});
+    });
+
+    
+
+//#endregion
+///////////////////////////////////////////////////////
 app.listen(port, function(){
     console.log('Server started on port '+port);
 });  
