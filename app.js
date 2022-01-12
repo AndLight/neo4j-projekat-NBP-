@@ -297,29 +297,6 @@ app.get('/', function(req, res, next){
                         console.log(err);
                     })
 
-
-
-            //     session
-            //         .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
-            //         .then(function(result){
-
-            //             let book = {
-            //                 id: result.records[0]._fields[0].identity.low,
-            //                 title: result.records[0]._fields[0].properties.title,
-            //                 year: result.records[0]._fields[0].properties.year,
-            //                 url: result.records[0]._fields[0].properties.url,
-            //                 writer: result.records[0]._fields[1].properties.name
-            //             }
-
-            //             res.render('update',{bookUpdate: book, updateYear: "Updated"})
-
-            //         })
-            //         .catch(function(err){
-            //             console.log(err);
-            //         })
-
-
-
             })
             .catch(function(err){
                 console.log(err);
@@ -392,14 +369,69 @@ app.get('/', function(req, res, next){
     })
 
     app.post("/updateWriter", function(req, res, next){
+        let newbookWriter = req.body.bookWriter;
+        let bookId = req.body.bookID; 
+
         session
-            .run()
+            .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
             .then(function(result){
+
+                let book = {
+                    id: result.records[0]._fields[0].identity.low,
+                    title: result.records[0]._fields[0].properties.title,
+                    year: result.records[0]._fields[0].properties.year,
+                    url: result.records[0]._fields[0].properties.url,
+                    writer: result.records[0]._fields[1].properties.name
+                }
+
+
+                session
+                    .run('match (n:writer{name: \"'+newbookWriter+'\"}) return n')
+                    .then(function(result){
+                        
+                        // if the writer is not found add him
+                        if(!result.records.length){
+                            session
+                                .run('create (n: writer {name: \"'+newbookWriter +'\"}) return n')
+
+                                .catch(function(err){
+                                    console.log("1"+err);
+                                })
+                        }
+
+                        //delete existing connection book old writer
+                        session
+                            .run('match (n:book {title:\"'+book.title+'\"}), ((w)-[r]-(n)) delete r')
+                            .then(function(result){
+                                
+                                //make new connection book new writer
+                                session
+                                    .run("match (a: book {title: \""+book.title+"\"}),(b:writer {name: \""+newbookWriter+"\"}) merge (a)-[r:writen]-(b)  merge (b)-[p:wrote]-(a)")
+                                    .then(function(){
+                                        book.writer= newbookWriter;
+                                        
+                                        res.render('update',{bookUpdate: book, updateWriter: "Updated"})
+                                    })
+                                    .catch(function(err){
+                                        console.log("2"+err);
+                                    })
+                            })
+                            .catch(function(err){
+                                console.log("3"+err);
+                            })
+
+                        
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    });
 
             })
             .catch(function(err){
-                console.log(err);
-            })
+                console.log("4"+err);
+            });
+
+        
     })
 
 //#endregion

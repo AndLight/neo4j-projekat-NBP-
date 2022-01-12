@@ -38,6 +38,7 @@
 <form method="POST" action="/updateWriter">
     <div class="form-group">
         <label>Writer</label>
+         {{#if updateWriter}} <span class="text-success">{{updateWriter}}</span>{{/if}}
         <input type="hidden" name="bookID" value={{bookUpdate.id}}>
         <input value="{{bookUpdate.writer}}" type="text" name="bookWriter" class="form-control" placeholder="Writer">
     </div>
