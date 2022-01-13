@@ -16,6 +16,22 @@
     </div>
 
     <div class="form-group">
+        <label>Book genre</label>
+        <div class="row">
+            <select name="bookGenre" id="lang" class="form-select selectWriter" aria-placeholder="   ">
+                
+                <option disabled selected value> -- Select a genre -- </option>
+                
+                {{#each genreA}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+                
+            </select>
+            <a href="/addGenre" class="btn btn-primary form-control addWriter">Add a new genre</a>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label>Writer</label>
         <input type="text" name="bookWriter" class="form-control" placeholder="Writer">
     </div>

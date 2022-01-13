@@ -1,3 +1,24 @@
+create (n: genre {genreName: "Novel"});
+create (n: genre {genreName: "Horor fiction"});
+create (n: genre {genreName: "Thriller"});
+create (n: genre {genreName: "Dark Fantasy"});
+create (n: genre {genreName: "Science fiction"});
+create (n: genre {genreName: "Apocalyptic fiction"});
+create (n: genre {genreName: "Post-apocalyptic fiction"});
+create (n: genre {genreName: "Fantasy fiction"});
+create (n: genre {genreName: "Gothic fiction"});
+create (n: genre {genreName: "Psychological horror"});
+create (n: genre {genreName: "Supernatural fiction"});
+create (n: genre {genreName: "Psychological thriller"});
+create (n: genre {genreName: "Tragedy"});
+create (n: genre {genreName: "Drama"});
+create (n: genre {genreName: "Romance"});
+create (n: genre {genreName: "Mystery"});
+create (n: genre {genreName: "Crime fiction"});
+create (n: genre {genreName: "Detective novel"});
+create (n: genre {genreName: "Historical fiction"});
+
+
 create (n: writer {name: "Stephen King"});
 
 create (c: book {title: "IT"});
@@ -6,11 +27,24 @@ set a.year=1986
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/7/78/It_%28Stephen_King_novel_-_cover_art%29.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
+match (a: book {title: "IT"}), (b:genre {genreName: "Novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "IT"}), (b:genre {genreName: "Horor fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "IT"}), (b:genre {genreName: "Thriller"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "IT"}), (b:genre {genreName: "Dark Fantasy"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
+
 create (c: book {title: "The Stand"});
 match (a: book {title: "The Stand"}),(b:writer {name: "Stephen King"}) 
 set a.year=1978 
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/9/96/The_Stand_cover.jpg/220px-The_Stand_cover.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Stand"}), (b:genre {genreName: "Novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Stand"}), (b:genre {genreName: "Horor fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Stand"}), (b:genre {genreName: "Science fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Stand"}), (b:genre {genreName: "Apocalyptic fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Stand"}), (b:genre {genreName: "Post-apocalyptic fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Stand"}), (b:genre {genreName: "Fantasy fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 create (c: book {title: "The Shining"});
 match (a: book {title: "The Shining"}),(b:writer {name: "Stephen King"}) 
@@ -18,11 +52,23 @@ set a.year=1977
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Shiningnovel.jpg/220px-Shiningnovel.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
+match (a: book {title: "The Shining"}), (b:genre {genreName: "Novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Shining"}), (b:genre {genreName: "Horor fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Shining"}), (b:genre {genreName: "Gothic fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Shining"}), (b:genre {genreName: "Psychological horror"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Shining"}), (b:genre {genreName: "Supernatural fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
 create (c: book {title: "Misery"});
 match (a: book {title: "Misery"}),(b:writer {name: "Stephen King"}) 
 set a.year=1987 
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Misery_%281990_film_poster%29.png/220px-Misery_%281990_film_poster%29.png'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "Misery"}), (b:genre {genreName: "Novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Misery"}), (b:genre {genreName: "Horor fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Misery"}), (b:genre {genreName: "Thriller"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Misery"}), (b:genre {genreName: "Psychological thriller"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Misery"}), (b:genre {genreName: "Psychological horror"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
 
@@ -34,17 +80,26 @@ set a.year=1603
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/e/e9/Hamlet_1996_poster.jpg/220px-Hamlet_1996_poster.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
+match (a: book {title: "Hamlet"}), (b:genre {genreName: "Tragedy"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Hamlet"}), (b:genre {genreName: "Drama"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
 create (c: book {title: "Macbeth"});
 match (a: book {title: "Macbeth"}),(b:writer {name: "William Shakespeare"}) 
 set a.year=1987 
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/7/79/Macbeth_2015_poster.jpg/220px-Macbeth_2015_poster.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
+match (a: book {title: "Macbeth"}), (b:genre {genreName: "Tragedy"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
 create (c: book {title: "Romeo and Juliet"});
 match (a: book {title: "Romeo and Juliet"}),(b:writer {name: "William Shakespeare"}) 
 set a.year=1597 
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Romeo_and_juliet_brown.jpg/220px-Romeo_and_juliet_brown.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "Romeo and Juliet"}), (b:genre {genreName: "Tragedy"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Romeo and Juliet"}), (b:genre {genreName: "Romance"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
 
 
 
@@ -57,16 +112,38 @@ set a.year=1934
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/Murder_on_the_Orient_Express_First_Edition_Cover_1934.jpg/220px-Murder_on_the_Orient_Express_First_Edition_Cover_1934.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
+match (a: book {title: "Murder on the Orient Express"}), (b:genre {genreName: "Novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Murder on the Orient Express"}), (b:genre {genreName: "Mystery"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Murder on the Orient Express"}), (b:genre {genreName: "Crime fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Murder on the Orient Express"}), (b:genre {genreName: "Detective novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Murder on the Orient Express"}), (b:genre {genreName: "Historical fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
+
 create (c: book {title: "The Mysterious Affair at Styles"});
 match (a: book {title: "The Mysterious Affair at Styles"}),(b:writer {name: "Agatha Christie"}) 
 set a.year=1920 
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/8/8c/Mysterious_affair_at_styles.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
+match (a: book {title: "The Mysterious Affair at Styles"}), (b:genre {genreName: "Historical fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Mysterious Affair at Styles"}), (b:genre {genreName: "Crime fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Mysterious Affair at Styles"}), (b:genre {genreName: "Mystery"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Mysterious Affair at Styles"}), (b:genre {genreName: "Novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
+
 create (c: book {title: "The Murder of Roger Ackroyd"});
 match (a: book {title: "The Murder of Roger Ackroyd"}),(b:writer {name: "Agatha Christie"}) 
 set a.year=1926 
 set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/5/57/The_Murder_of_Roger_Ackroyd_First_Edition_Cover_1926.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Murder of Roger Ackroyd"}), (b:genre {genreName: "Mystery"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Murder of Roger Ackroyd"}), (b:genre {genreName: "Detective novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Murder of Roger Ackroyd"}), (b:genre {genreName: "Crime fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
+
+
+
+
 
 

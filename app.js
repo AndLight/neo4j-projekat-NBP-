@@ -59,8 +59,8 @@ app.get('/', function(req, res, next){
             });
 
             bookArr = bookArr.sort((a,b) => 0.5 - Math.random());
-            res.render('home',{books: bookArr});
             
+            res.render('home',{books: bookArr});
         })
         .catch(function(err){
             console.log(err);
@@ -70,8 +70,34 @@ app.get('/', function(req, res, next){
 
 //Add user 
     app.get('/add', function(req, res, next){
-        res.render('add');
+
+        session
+            .run("match (n:genre) return n")
+            .then(function(result){
+                let genreArr = [];
+
+                result.records.forEach(record => {
+
+                    genreArr.push(record._fields[0].properties.genreName)
+
+                })
+                genreArr.sort();
+                 
+                res.render('add', {genreA: genreArr});
+
+                // console.log(genreArr)
+                // console.log(result.records[0]._fields[0].properties.genreName)
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+
+        
 });
+
+app.get("/addGenre", function(req, res, next){
+    res.render('addGenre');
+})
 
 // End Home Page
 //#endregion
@@ -84,9 +110,46 @@ app.get('/', function(req, res, next){
         let bookYear = req.body.bookYear;
         let bookImage = "<img src=\'"+req.body.bookImage+"\'/>";
         let bookWriter = req.body.bookWriter;
-        
+        let bookGenre = req.body.bookGenre;
 
-        // console.log(bookName, bookYear, bookImage,bookWriter)
+        function repeaterCode2(bookName, bookWriter ){
+            session
+                            .run("match (a: book {title: \""+bookName+"\"}),(b:writer {name: \""+bookWriter+"\"}),(c:genre {genreName: \""+bookGenre+"\"}) set a.year="+bookYear+" set a.url=\""+bookImage+"\" merge (a)-[l:wrote]-(b) merge (a)-[r:is]-(c) merge (c) -[f:has]- (a)")
+                            .then(function(){
+                                 res.redirect('/add');
+                            })
+                            .catch(function(err){
+                                console.log(err);
+                            })
+        }
+        function repeaterCode1(bookName, bookWriter ){
+            session
+                    .run('match (n:book{title: \"'+bookName+'\"}) return n')
+                    .then(function(result){
+                        //if the book is not found add it 
+                        if(!result.records.length){
+                            session
+                                .run('create (n: book {title: \"'+bookName +'\"}) return n')
+                                .then(function(){
+                                    repeaterCode2(bookName, bookWriter );
+                                })
+                                .catch(function(err){
+                                     
+                                    console.log(err);
+                                })
+                        }else{
+                            repeaterCode2(bookName, bookWriter );
+                        }
+
+                        
+
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+        }
+
+        console.log(bookName, bookYear, bookImage,bookWriter, bookGenre)
 
         session
             .run('match (n:writer{name: \"'+bookWriter+'\"}) return n')
@@ -96,45 +159,21 @@ app.get('/', function(req, res, next){
                 if(!result.records.length){
                     session
                         .run('create (n: writer {name: \"'+bookWriter +'\"}) return n')
-                        .then()
+                        .then(function(){
+                            repeaterCode1(bookName, bookWriter);
+                        })
                         .catch(function(err){
                             console.log(err);
                         })
+                }else{
+                    repeaterCode1(bookName, bookWriter);
                 }
-
-                session
-                    .run('match (n:book{title: \"'+bookName+'\"}) return n')
-                    .then(function(result){
-                        //if the book is not found add it 
-                        if(!result.records.length){
-                            session
-                                .run('create (n: book {title: \"'+bookName +'\"}) return n')
-                                .then()
-                                .catch(function(err){
-                                    console.log(err);
-                                })
-                        }
-
-                        session
-                            .run("match (a: book {title: \""+bookName+"\"}),(b:writer {name: \""+bookWriter+"\"}) set a.year="+bookYear+" set a.url=\""+bookImage+"\" merge (a)-[r:wrote]-(b)")
-                            .then(console.log("kraj"))
-                            .catch(function(err){
-                                console.log(err);
-                            })
-                    })
-                    .catch(function(err){
-                        console.log(err);
-                    })
-
-                
+                  
             })
             .catch(function(err){
                 console.log(err);
             });
 
-
-            // session.close();
-        res.redirect('add');
     });
 
 //#endregion
@@ -142,16 +181,7 @@ app.get('/', function(req, res, next){
 //#region [rgba (229 ,180 ,205 , 0.1)] BOOK
 // Book Page
 
-// let helpDIV = document.getElementsByClassName("result_ID");
-// let idValue = helpDIV.id;
-
-// console.log("idValue")
-// console.log(idValue)
-
-    app.post("/book", function(req, res, next){
-        let bookId = req.body.bookID;
-        // console.log(bookId)
-
+    function forBookPage(bookId, res){
         session
             .run("match (n) where ID(n)="+bookId+" return n")
             .then(function(result){
@@ -200,25 +230,60 @@ app.get('/', function(req, res, next){
                             
                                 });
 
-                                res.render('book',{
-                                    book: book, 
-                                    authorBooks: bookArr,
-                                    yearsBooks: bookYearArr
-                                });
+                                    session
+                                        .run("match (a:book{title:\""+book.title+"\"})-[*0..2]->(n:book) where not (a)-->(a:book{title:\""+book.title+"\"}) return distinct n limit 6")
+                                        .then(function(result){
+
+                                            let bookRecomendArr = [];
+
+                                            result.records.forEach(record => {
+                                                if(bookId!=record._fields[0].identity.low){
+
+                                                    bookRecomendArr.push({
+                                                        id: record._fields[0].identity.low,
+                                                        title: record._fields[0].properties.title,
+                                                        year: record._fields[0].properties.year,
+                                                        url: record._fields[0].properties.url
+                                                    });
+
+                                                }
+                                        
+                                            });
+
+                                            res.render('book',{
+                                                book: book, 
+                                                authorBooks: bookArr,
+                                                yearsBooks: bookYearArr,
+                                                bookRecomended: bookRecomendArr
+                                            });
+
+                                        })
+                                        .catch(function(err){
+                                            console.log(err);
+                                        })
+
+                                
                             })
                             .catch(function(err){
                                 console.log(err);
                             })
-                        
+                            
                     })
                     .catch(function(err){
                         console.log(err);
                     })
-  
+                
             })
             .catch(function(err){
                 console.log(err);
             })
+    }
+
+    app.post("/book", function(req, res, next){
+        let bookId = req.body.bookID;
+        // console.log(bookId)
+
+        forBookPage(bookId, res);
 
     });
 
@@ -232,7 +297,7 @@ app.get('/', function(req, res, next){
         let bookId = req.body.bookID;  
         
             session
-                .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+                .run("match (n where ID(n)="+bookId+")-[*1]-(w:writer) return n, w")
                 .then(function(result){
 
                     let book = {
@@ -242,7 +307,7 @@ app.get('/', function(req, res, next){
                         url: result.records[0]._fields[0].properties.url,
                         writer: result.records[0]._fields[1].properties.name
                     }
-
+                    
                     res.render('update',{bookUpdate: book})
 
                 })
@@ -288,15 +353,17 @@ app.get('/', function(req, res, next){
                                     .catch(function(err){
                                         console.log(err);
                                     })
+                                     
                             })
                             .catch(function(err){
                                 console.log(err);
                             })
+                             
                     })
                     .catch(function(err){
                         console.log(err);
                     })
-
+                     
             })
             .catch(function(err){
                 console.log(err);
@@ -312,8 +379,9 @@ app.get('/', function(req, res, next){
             .then(function(result){
 
                 session
-                    .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+                    .run("match (n where ID(n)="+bookId+")-[writen]-(w:writer) return n,w")
                     .then(function(result){
+                        console.log(result)
 
                         let book = {
                             id: result.records[0]._fields[0].identity.low,
@@ -324,11 +392,12 @@ app.get('/', function(req, res, next){
                         }
 
                         res.render('update',{bookUpdate: book, updateYear: "Updated"})
-
+                         
                     })
                     .catch(function(err){
                         console.log(err);
                     })
+             
             })
             .catch(function(err){
                 console.log(err);
@@ -372,8 +441,22 @@ app.get('/', function(req, res, next){
         let newbookWriter = req.body.bookWriter;
         let bookId = req.body.bookID; 
 
+        function repeaterCode(book, newbookWriter) {
+            //delete existing connection book old writer make new connection book new writer
+            session
+                .run('match (n:book {title:\"'+book.title+'\"}), (w:writer), (a:writer {name:\"'+newbookWriter+'\"}),(w)-[r]-(n) delete r merge (n)-[s:writen]-(a) merge (a)-[p:wrote]-(n) return a')
+                .then(function(){
+    
+                    book.writer= newbookWriter;
+                    res.render('update',{bookUpdate: book, updateWriter: "Updated"})
+                })
+                .catch(function(err){
+                    console.log("3 "+err);
+                })
+        }
+
         session
-            .run("match (n where ID(n)="+bookId+")-[*1]-(w) return n, w")
+            .run("match (n where ID(n)="+bookId+")-[writen]-(w:writer) return n,w")
             .then(function(result){
 
                 let book = {
@@ -386,41 +469,25 @@ app.get('/', function(req, res, next){
 
 
                 session
-                    .run('match (n:writer{name: \"'+newbookWriter+'\"}) return n')
+                    .run('match (n:writer {name: \"'+newbookWriter+'\"}) return n')
                     .then(function(result){
-                        
                         // if the writer is not found add him
                         if(!result.records.length){
                             session
-                                .run('create (n: writer {name: \"'+newbookWriter +'\"}) return n')
-
+                                .run('create (m: writer {name: \"'+newbookWriter +'\"})')
+                                .then(function(){
+                                    
+                                    repeaterCode(book, newbookWriter);
+                        
+                                })
                                 .catch(function(err){
                                     console.log("1"+err);
                                 })
+                        } else {
+
+                        repeaterCode(book, newbookWriter)
                         }
-
-                        //delete existing connection book old writer
-                        session
-                            .run('match (n:book {title:\"'+book.title+'\"}), ((w)-[r]-(n)) delete r')
-                            .then(function(result){
-                                
-                                //make new connection book new writer
-                                session
-                                    .run("match (a: book {title: \""+book.title+"\"}),(b:writer {name: \""+newbookWriter+"\"}) merge (a)-[r:writen]-(b)  merge (b)-[p:wrote]-(a)")
-                                    .then(function(){
-                                        book.writer= newbookWriter;
-                                        
-                                        res.render('update',{bookUpdate: book, updateWriter: "Updated"})
-                                    })
-                                    .catch(function(err){
-                                        console.log("2"+err);
-                                    })
-                            })
-                            .catch(function(err){
-                                console.log("3"+err);
-                            })
-
-                        
+                             
                     })
                     .catch(function(err){
                         console.log(err);
@@ -445,13 +512,50 @@ app.get('/', function(req, res, next){
             session
                 .run("match (n) where ID(n)= "+bookId+" detach delete n")
                 .then(function(){
-                    res.redirect('/');
+                    
+                    res.redirect('/add');
                 })
                 .catch(function(err){
                     console.log(err);
                 })
         
     });
+//#endregion
+///////////////////////////////////////////////////////
+//#region [rgba (102, 255, 255, 0.1)] AddGenre
+    app.post('/addGenre', function(req, res, next){
+        let genreName = req.body.genreName;
+
+        session
+            .run("create (n:genre {genreName: \""+genreName+"\"}) return n")
+            .then(function(){
+                
+                res.redirect('/add');
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+
+    })
+//#endregion
+///////////////////////////////////////////////////////
+//#region [rgba (255, 255, 255, 0.1)] search
+    app.post('/search', function(req, res, next){
+        let search = req.body.search;
+
+        session
+            .run("match (n:book {title: \""+search+"\"}) return n")
+            .then(function(result){
+
+                let bookId = result.records[0]._fields[0].identity.low;
+
+                forBookPage(bookId, res);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+
+    })
 //#endregion
 ///////////////////////////////////////////////////////
 app.listen(port, function(){

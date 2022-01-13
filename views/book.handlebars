@@ -14,9 +14,24 @@
         </form>
 </div>
 
+<div class="container-fluid  recomended">
+    <h3>Recomended</h3>
+    <div class="row">
+        {{#each bookRecomended}}
+           
+                <form method="POST" action="/book" class="form__submit col recomendedBookItems" name="form">
+                        <input type="hidden" name="bookID" value={{this.id}}>
+                        <div onclick="this.parentNode.submit()">{{{this.url}}}</div>
+                        <p>{{this.title}}</p>
+                        <p>{{this.year}}</p>
+                </form>
+
+        {{/each}}
+    </div>
+</div>
 
 <div class="container-fluid  recomended">
-    <h3>Recomended by same writer</h3>
+    <h3>By same author</h3>
     <div class="row">
         {{#each authorBooks}}
             <form method="POST" action="/book" class="form__submit col recomendedBookItems" name="form">
