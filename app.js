@@ -19,8 +19,6 @@ var neo4j = require('neo4j-driver');
     app.set('view engine', 'handlebars');
 
     app.use(express.static(path.join(__dirname, '/public')));
-    // app.use(express.static(path.join('/public')));
-    // app.use(express.static('public'));
 
 // body-parser
     app.use(bodyParser.json());
@@ -54,7 +52,7 @@ app.get('/', function(req, res, next){
                     year: record._fields[0].properties.year,
                     url: record._fields[0].properties.url
                 })
-                // console.log(record._fields[0].properties)
+
                
             });
 
@@ -85,8 +83,7 @@ app.get('/', function(req, res, next){
                  
                 res.render('add', {genreA: genreArr});
 
-                // console.log(genreArr)
-                // console.log(result.records[0]._fields[0].properties.genreName)
+
             })
             .catch(function(err){
                 console.log(err);
@@ -211,8 +208,7 @@ app.get("/addGenre", function(req, res, next){
                         bookArr = bookArr.sort((a,b) => 0.5 - Math.random());
                         let minYear = Number(book.year)-50;
                         let maxYear = Number(book.year)+50;
-                        // console.log("min max")
-                        // console.log(minYear, maxYear)
+
 
                         session
                             .run("match(b:book) where b.year> "+ minYear +" and b.year<"+ maxYear +" return b limit 10")
@@ -281,7 +277,7 @@ app.get("/addGenre", function(req, res, next){
 
     app.post("/book", function(req, res, next){
         let bookId = req.body.bookID;
-        // console.log(bookId)
+
 
         forBookPage(bookId, res);
 
