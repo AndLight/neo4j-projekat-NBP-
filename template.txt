@@ -1,8 +1,0 @@
-
-TEMPLATE:
-
-create (c: book {title: "Misery"});
-match (a: book {title: "Misery"}),(b:writer {name: "Stephen King"}) 
-set a.year=1987 
-set a.url="<img src="" 
-merge (a)-[r:writen]-(b)  merge (b)-[p:wrote]-(a);

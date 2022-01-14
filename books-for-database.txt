@@ -163,9 +163,9 @@ match (a: book {title: "The Murder of Roger Ackroyd"}), (b:genre {genreName: "Cr
 create (n: writer {name: "J. K. Rowling"});
 
 create (c: book {title: "Harry Potter"});
-match (a: book {title: "Harry Potters"}),(b:writer {name: "J. K. Rowling"}) 
+match (a: book {title: "Harry Potter"}),(b:writer {name: "J. K. Rowling"}) 
 set a.year=1997 
-set a.url="<img src='https://m.media-amazon.com/images/I/41oQvhIWahL._SY346_.jpg'/>" 
+set a.url="<img src='http://prodimage.images-bn.com/pimages/9780545139700_p0_v5_s1200x630.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
 match (a: book {title: "Harry Potter"}), (b:genre {genreName: "Fantasy fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);

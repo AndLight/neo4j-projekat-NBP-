@@ -1,0 +1,9 @@
+1. U cmd pokrenuti komandu "npm install"
+2. Pokrenuti bazu podataka neo4j
+	2.1. Dodati podatke iz tekstualnog fajla "books-for-database"
+			Nalazi se unutar foldera
+3. Pokrenuti cmd komandom "node app.js"
+	Ili ako imate nodemon instaliran komandom "nodemon"
+4. Sajt pokrenete na localhost:3000
+
+Nadam se da ce vam se svideti :D
