@@ -21,6 +21,15 @@ create (n: genre {genreName: "Historical fiction"});
 create (n: genre {genreName: "High fiction"});
 create (n: genre {genreName: "Adventure"});
 create (n: genre {genreName: "Historical novel"});
+create (n: genre {genreName: "Novella"});
+create (n: genre {genreName: "Detective fiction"});
+create (n: genre {genreName: "Conspiracy fiction"});
+create (n: genre {genreName: "Children's fantasy"});
+create (n: genre {genreName: "War"});
+create (n: genre {genreName: "Crime novel"});	
+create (n: genre {genreName: "Advanture"});	
+
+
 
 
 create (n: writer {name: "Stephen King"});
@@ -311,45 +320,107 @@ merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
 match (a: book {title: "Robinson Crusoe"}), (b:genre {genreName: "Advanture"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
+create (n: writer {name: "Charles Dickens"});
 
-create (n: writer {name: "Stephen King"});
-
-create (c: book {title: "It"});
-match (a: book {title: "It"}),(b:writer {name: "Stephen King"}) 
-set a.year=1719 
-set a.url="<img src='https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1631057329l/2932._SY475_.jpg'/>" 
+create (c: book {title: "A Tale of Two Cities"});
+match (a: book {title: "A Tale of Two Cities"}),(b:writer {name: "Charles Dickens"}) 
+set a.year=1859
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/commons/3/3c/Tales_serial.jpg'/>" 
 merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
-match (a: book {title: "It"}), (b:genre {genreName: "Horor fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
-match (a: book {title: "Strange Case of Dr Jekyll and Mr Hyde"}), (b:genre {genreName: "Thriller"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
-match (a: book {title: "Strange Case of Dr Jekyll and Mr Hyde"}), (b:genre {genreName: "Dark Fantasy"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "A Tale of Two Cities"}), (b:genre {genreName: "Historical novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
+create (n: writer {name: "Antoine de Saint-Exupéry"});
+
+create (c: book {title: "The Little Prince"});
+match (a: book {title: "The Little Prince"}),(b:writer {name: "Antoine de Saint-Exupéry"}) 
+set a.year=1943
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Little Prince"}), (b:genre {genreName: "Novella"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
+create (n: writer {name: "Dan Brown"});
+
+create (c: book {title: "The Da Vinci Code"});
+match (a: book {title: "The Da Vinci Code"}),(b:writer {name: "Dan Brown"}) 
+set a.year=2003
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/6/6b/DaVinciCode.jpg'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Da Vinci Code"}), (b:genre {genreName: "Mystery"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Da Vinci Code"}), (b:genre {genreName: "Detective fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Da Vinci Code"}), (b:genre {genreName: "Conspiracy fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Da Vinci Code"}), (b:genre {genreName: "Thriller"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+
+create (c: book {title: "Inferno"});
+match (a: book {title: "Inferno"}),(b:writer {name: "Dan Brown"}) 
+set a.year=2013 
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/b/bb/Inferno-cover.jpg'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "Inferno"}), (b:genre {genreName: "Mystery"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Inferno"}), (b:genre {genreName: "Conspiracy fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "Inferno"}), (b:genre {genreName: "Thriller"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
+create (n: writer {name: "C. S. Lewis"});
+
+create (c: book {title: "The Lion, the Witch and the Wardrobe"});
+match (a: book {title: "The Lion, the Witch and the Wardrobe"}),(b:writer {name: "C. S. Lewis"}) 
+set a.year=1950
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/8/86/TheLionWitchWardrobe%281stEd%29.jpg'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Lion, the Witch and the Wardrobe"}), (b:genre {genreName: "Children's fantasy"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
+create (n: writer {name: "Jack Higgins"});
+
+create (c: book {title: "The Eagle Has Landed"});
+match (a: book {title: "The Eagle Has Landed"}),(b:writer {name: "Jack Higgins"}) 
+set a.year=1975
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/d/dc/TheEagleHasLanded.jpg'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Eagle Has Landed"}), (b:genre {genreName: "Thriller"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Eagle Has Landed"}), (b:genre {genreName: "War"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
+create (n: writer {name: "Suzanne Collins"});
+
+create (c: book {title: "The Hunger Games"});
+match (a: book {title: "The Hunger Games"}),(b:writer {name: "Suzanne Collins"}) 
+set a.year=2008
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/d/dc/The_Hunger_Games.jpg'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Hunger Games"}), (b:genre {genreName: "Adventure"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
+match (a: book {title: "The Hunger Games"}), (b:genre {genreName: "Science fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
+create (n: writer {name: "Mario Puzo"});
+
+create (c: book {title: "The Godfather"});
+match (a: book {title: "The Godfather"}),(b:writer {name: "Mario Puzo"}) 
+set a.year=1969
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/f/f4/Godfather-Novel-Cover.png'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
+
+match (a: book {title: "The Godfather"}), (b:genre {genreName: "Crime novel"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
+create (n: writer {name: "Frank Herbert"});
 
+create (c: book {title: "Dune"});
+match (a: book {title: "Dune"}),(b:writer {name: "Frank Herbert"}) 
+set a.year=1969
+set a.url="<img src='https://upload.wikimedia.org/wikipedia/en/d/de/Dune-Frank_Herbert_%281965%29_First_edition.jpg'/>" 
+merge (a)-[r:writen]-(b) merge (b)-[p:wrote]-(a);
 
-
-
-
-
-
-
-
-
-
-
-
+match (a: book {title: "Dune"}), (b:genre {genreName: "Science fiction"}) merge (a)-[r:is]-(b) merge (b) -[f:has]- (a);
 
 
 
